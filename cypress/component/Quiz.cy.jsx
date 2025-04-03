@@ -3,47 +3,49 @@ import Quiz from '../../client/src/components/Quiz';
 import { mount } from 'cypress/react';
 
 describe('Quiz Component', () => {
+    beforeEach(() => {
+        cy.fixture('questions.json').as('questions');
+    });
+    
     it('should initially render the start button', () => {
         cy.mount(<Quiz />);
         cy.contains('Start Quiz').should('be.visible');
     });
 
-    it('starts quiz when the Start button is clicked', () => {
-        cy.mount(<Quiz />);
+    it('starts quiz when the Start button is clicked', function () {
+        mount(<Quiz questions={this.questions} />);
         cy.contains('Start Quiz').click();
-        cy.get('1').should('be.visible');
+        cy.contains(this.questions[0].question).should('be.visible');
     });
 
-    it('continues to next question after answering', () => {
-        cy.mount(<Quiz />);
+    it('gives option to make a selection', function () {
+        mount(<Quiz questions={this.questions} />);
         cy.contains('Start Quiz').click();
-        cy.get('2').should('have.text', 'answers');
+        cy.get('.option').first().click();
+        cy.get('.question').should('not.have.text', this.questions[0].question);
     });
 
-    it('continues to next question after answering', () => {
-        cy.mount(<Quiz />);
+    // it('gives option to make a selection', function () {
+    //     mount(<Quiz questions={this.questions} />);
+    //     cy.contains('Start Quiz').click();
+    //     cy.get('.option').second().click();
+    //     cy.get('.question').should('not.have.text', this.questions[0].question);
+    // });
+
+    // it('gives option to make a selection', function () {
+    //     mount(<Quiz questions={this.questions} />);
+    //     cy.contains('Start Quiz').click();
+    //     cy.get('.option').third().click();
+    //     cy.get('.question').should('not.have.text', this.questions[0].question);
+    // });
+
+    it('shows the final score', function () {
+        mount(<Quiz questions={this.questions} />);
         cy.contains('Start Quiz').click();
-        cy.get('3').should('have.text', 'answers');
+        cy.get('.option').each(($el) => {
+            cy.wrap($el).click();
+        });
+
+    cy.contains('Your Score:').should('be.visible');
     });
-
-    it('continues to next question after answering', () => {
-        cy.mount(<Quiz />);
-        cy.contains('Start Quiz').click();
-        cy.get('4').should('have.text', 'answers');
-    });
-
-    it('continues to next question after answering', () => {
-        cy.mount(<Quiz />);
-        cy.contains('Start Quiz').click();
-        cy.get('5').should('have.text', 'answers');
-    });
-
-    it('ends the quiz and shows the final score', () => {
-        cy.mount(<Quiz />);
-        cy.contains('Start Quiz').click();
-
-        cy.get('option').should('exist').and('have.value', 't').click();
-    });
-
-    cy.contains('Your Score').should('be.visible');
 });

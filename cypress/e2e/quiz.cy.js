@@ -1,6 +1,7 @@
 describe('Quiz End-to-End Test', () => {
     beforeEach(() => {
         cy.visit('/');
+        
     });
 
     it('starts the quiz when the Start button is clicked', () => {
