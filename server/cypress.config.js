@@ -1,7 +1,8 @@
-const { defineConfig } = require("cypress");
+import { defineConfig } from 'cypress'
 
 module.exports = defineConfig({
   component: {
+    supportFile: 'cypress/support/component.js',
     devServer: {
       framework: "react",
       bundler: "vite",
@@ -14,4 +15,5 @@ module.exports = defineConfig({
       bundler: "vite",
     },
   },
+
 });

@@ -13,13 +13,13 @@ describe('Quiz Component', () => {
     });
 
     it('starts quiz when the Start button is clicked', function () {
-        mount(<Quiz questions={this.questions} />);
+        cy.mount(<Quiz questions={this.questions} />);
         cy.contains('Start Quiz').click();
         cy.contains(this.questions[0].question).should('be.visible');
     });
 
     it('gives option to make a selection', function () {
-        mount(<Quiz questions={this.questions} />);
+        cy.mount(<Quiz questions={this.questions} />);
         cy.contains('Start Quiz').click();
         cy.get('.option').first().click();
         cy.get('.question').should('not.have.text', this.questions[0].question);
