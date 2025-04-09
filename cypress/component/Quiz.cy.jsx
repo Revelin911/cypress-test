@@ -1,51 +1,44 @@
 import React from "react";
 import Quiz from '../../client/src/components/Quiz';
 import { mount } from 'cypress/react';
+import questions from '../fixtures/questions.json';
 
 describe('Quiz Component', () => {
     beforeEach(() => {
-        cy.fixture('questions.json').as('questions');
+        // cy.visit('http://localhost:3000');
+    cy.intercept({
+        method: 'GET',
+        url: '/api/questions/random'
+      },
+      {
+        fixture: 'questions.json',
+        statusCode: 200
+      }
+      ).as('getQuestions')
     });
     
     it('should initially render the start button', () => {
-        cy.mount(<Quiz />);
+        mount(<Quiz />);
         cy.contains('Start Quiz').should('be.visible');
     });
 
-    it('starts quiz when the Start button is clicked', function () {
-        cy.mount(<Quiz questions={this.questions} />);
+    it('starts quiz and displays first questionr', function () {
+        mount(<Quiz />);
         cy.contains('Start Quiz').click();
-        cy.contains(this.questions[0].question).should('be.visible');
+        cy.wait('@getQuestions');
+        cy.contains(questions[0].question).should('be.visible');
     });
 
-    it('gives option to make a selection', function () {
-        cy.mount(<Quiz questions={this.questions} />);
+    it('answers questions and completes quiz', function () {
+        mount(<Quiz />);
         cy.contains('Start Quiz').click();
-        cy.get('.option').first().click();
-        cy.get('.question').should('not.have.text', this.questions[0].question);
+        cy.wait('@getQuestions');
+
+    questions.forEach(() => {
+        cy.get('button').contains(/^1$/).click();
     });
 
-    // it('gives option to make a selection', function () {
-    //     mount(<Quiz questions={this.questions} />);
-    //     cy.contains('Start Quiz').click();
-    //     cy.get('.option').second().click();
-    //     cy.get('.question').should('not.have.text', this.questions[0].question);
-    // });
-
-    // it('gives option to make a selection', function () {
-    //     mount(<Quiz questions={this.questions} />);
-    //     cy.contains('Start Quiz').click();
-    //     cy.get('.option').third().click();
-    //     cy.get('.question').should('not.have.text', this.questions[0].question);
-    // });
-
-    it('shows the final score', function () {
-        mount(<Quiz questions={this.questions} />);
-        cy.contains('Start Quiz').click();
-        cy.get('.option').each(($el) => {
-            cy.wrap($el).click();
-        });
-
+cy.contains('Quiz Completed').should('be.visible');
     cy.contains('Your Score:').should('be.visible');
     });
 });
