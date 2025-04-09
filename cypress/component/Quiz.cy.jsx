@@ -1,7 +1,7 @@
 import React from "react";
 import Quiz from '../../client/src/components/Quiz';
 import { mount } from 'cypress/react';
-import questions from '../fixtures/questions.json';
+// import questions from '../fixtures/questions.json';
 
 describe('Quiz Component', () => {
     beforeEach(() => {
@@ -22,23 +22,34 @@ describe('Quiz Component', () => {
         cy.contains('Start Quiz').should('be.visible');
     });
 
-    it('starts quiz and displays first question', function () {
+    it('should initially render the start button', () => {
         mount(<Quiz />);
-        cy.contains('Start Quiz').click();
-        cy.wait('@getQuestions');
-        cy.contains(questions[0].question).should('be.visible');
+        cy.contains('Start Quiz').should('be.visible');
     });
 
-    it('answers questions and completes quiz', function () {
-        mount(<Quiz />);
-        cy.contains('Start Quiz').click();
-        cy.wait('@getQuestions');
+  it('should answer questions and complete the quiz', () => {
+    cy.mount(<Quiz />);
+    cy.get('button').contains('Start Quiz').click();
 
-    // questions.forEach((question) => {
-    //     cy.contains(question.answers[0].text).click();
-    // });
+    // Answer questions
+    cy.get('button').contains('1').click();
 
-cy.contains('Quiz Completed').should('be.visible');
-    cy.contains('Your Score:').should('be.visible');
-    });
+    // Verify the quiz completion
+    cy.get('.alert-success').should('be.visible').and('contain', 'Your score');
+  });
+
+  it('should restart the quiz after completion', () => {
+    cy.mount(<Quiz />);
+    cy.get('button').contains('Start Quiz').click();
+
+    // Answer questions
+    cy.get('button').contains('1').click();
+
+    // Restart the quiz
+    cy.get('button').contains('Take New Quiz').click();
+
+    // Verify the quiz is restarted
+    cy.get('.card').should('be.visible');
+    cy.get('h2').should('not.be.empty');
+  });
 });

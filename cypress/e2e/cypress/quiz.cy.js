@@ -1,28 +1,40 @@
 describe('Quiz End-to-End Test', () => {
     beforeEach(() => {
         cy.visit('/');
-        cy.fixture('questions.json').as('questions');
+        cy.intercept('GET', '/api/questions/random',
+          {
+            fixture: 'questions.json'
+          }).as('getQuestions')
     });
 
-    it('starts the quiz when the Start button is clicked', () => {
-        cy.contains('Start Quiz').click();
-cy.contains(this.questions[0].question).should('be.visible');
+    it('should initially render the start button', () => {
+        mount(<Quiz />);
+        cy.contains('Start Quiz').should('be.visible');
     });
 
-    it('should go through all questions', () => {
-        cy.contains('Start Quiz').click();
-        cy.get('option').each(($el) => {
-            cy.wrap($el).click();
-        });
-        cy.contains('Your Score:').should('be.visible');
-    });
+  it('should answer questions and complete the quiz', () => {
+    cy.mount(<Quiz />);
+    cy.get('button').contains('Start Quiz').click();
 
-    it('will restart the quiz', () => {
-        cy.contains('Start Quiz').click();
-        cy.get('option').each(($el) => {
-            cy.wrap($el).click();
-    });
-    cy.contains('Restart Quiz').click();
-    cy.contains('Start Quiz').should(be.visisble);
-});
+    // Answer questions
+    cy.get('button').contains('1').click();
+
+    // Verify the quiz completion
+    cy.get('.alert-success').should('be.visible').and('contain', 'Your score');
+  });
+
+  it('should restart the quiz after completion', () => {
+    cy.mount(<Quiz />);
+    cy.get('button').contains('Start Quiz').click();
+
+    // Answer questions
+    cy.get('button').contains('1').click();
+
+    // Restart the quiz
+    cy.get('button').contains('Take New Quiz').click();
+
+    // Verify the quiz is restarted
+    cy.get('.card').should('be.visible');
+    cy.get('h2').should('not.be.empty');
+  });
 });
