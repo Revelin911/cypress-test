@@ -2,7 +2,7 @@
 
 ## Description
 
-This project allows users to search and save books in an organized manner. The reason behind this is for users to have a seamless experience while performing certain actions. Being able to go through the database will help users view books and then view the ones they saved separately. This project uses Google Books API with a MongoDB database. I was able to learn how to rewirk some of starter code to go from RESTful API to using MongoDB database. It helped me get more practice in mapping out each step and adding the proper functions accordingly. 
+This project allows users to test features before deployment. The reason behind this is for users to have a seamless experience while performing certain actions. Being able to go through the database will help minimize erros. This project uses Cypress testing. I was able to learn how to test out components based off existing code. It helped me get more practice in mapping out each step and adding the proper functions accordingly. 
 
 ## Table of Contents 
 
@@ -17,13 +17,15 @@ These will be the following downloads/ installations that will be necessary. For
 
 ## Usage
 
-In order for this project to work properly, you will need to download the libraries onto your local device for use with your code editor. In the code editor, you will open up a terminal and begin installing the node modules. To begin using the application type "npm run build" into the terminal. After this begins you will run "npm run start". This command should begin running the site on your local device.
+In order for this project to work properly, you will need to download the libraries onto your local device for use with your code editor. In the code editor, you will open up a terminal and begin installing the node modules. To begin using the application type "npm run build" into the terminal. After this begins you will run "npm run start". This command should begin running the site on your local device. You will also need to install "cypress using command npm install cypress --save-dev".
   
 ## Credits
 
 ![MIT LICENSE INFO](https://choosealicense.com/licenses/mit/#)
 
-![GraphQL Usage](https://stackoverflow.com/questions/76758330/use-of-useeffects-to-set-data-using-graphql-in-react-application)
+![Cypress Install](https://stackoverflow.com/questions/75898942/cypress-installation-through-npm-doesnt-work)
+
+![Cypress Install](https://www.cypress.io/)
 
 ## License
 
@@ -52,6 +54,5 @@ SOFTWARE.
 ## Tests
 
 If everything runs correctly you should be able to view the following prompts:
-![Examples of data](Assets/Prompts.png)
-
-![Render Link](https://drive.google.com/file/d/1wKvDrKflmj_nI3bDpNfPFSBVNbeha48K/view)
+ 
+![Walkthrough Video](https://www.loom.com/share/5deabd82121d4c2b9d61fdbe71ed2d67?sid=b93d0456-5940-4092-9188-761e1456c3c8)
