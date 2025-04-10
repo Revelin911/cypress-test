@@ -1,6 +1,6 @@
 describe('Quiz End-to-End Test', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000');
+        cy.visit('http://localhost:3001');
         cy.intercept('GET', '/api/questions/random',
           {
             fixture: 'questions.json'
@@ -8,12 +8,10 @@ describe('Quiz End-to-End Test', () => {
     });
 
     it('should initially render the start button', () => {
-        mount(<Quiz />);
         cy.contains('Start Quiz').should('be.visible');
     });
 
   it('should answer questions and complete the quiz', () => {
-    cy.mount(<Quiz />);
     cy.get('button').contains('Start Quiz').click();
 
     // Answer questions
@@ -24,7 +22,6 @@ describe('Quiz End-to-End Test', () => {
   });
 
   it('should restart the quiz after completion', () => {
-    cy.mount(<Quiz />);
     cy.get('button').contains('Start Quiz').click();
 
     // Answer questions
