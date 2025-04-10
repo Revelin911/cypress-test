@@ -1,6 +1,6 @@
 describe('Quiz End-to-End Test', () => {
     beforeEach(() => {
-        cy.visit('/');
+        cy.visit('http://localhost:3000');
         cy.intercept('GET', '/api/questions/random',
           {
             fixture: 'questions.json'
